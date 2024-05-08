@@ -1,9 +1,20 @@
-.board {
+.app {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, 40px);
+  grid-template-rows: repeat(17, 40px);
 }
 
 .cell {
-  width: 20px;
-  height: 20px;
-  border: 1px solid black;
+  border: 1px solid white;
+}
+
+.filled {
+  background-color: whitesmoke;
 }
