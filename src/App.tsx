@@ -22,7 +22,9 @@ export function Board({
         row.map((cell, colIdx) => (
           <span
             key={`${rowIdx} - ${colIdx}`}
-            className={`cell ${cell ? "filled" : "not-filled"}`}
+            className={`cell ${cell ? "filled" : "not-filled"} ${
+              rowIdx < 2 ? "not-visible" : ""
+            }`}
           >
             {rowIdx}-{colIdx}
           </span>
