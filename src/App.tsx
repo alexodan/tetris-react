@@ -63,7 +63,6 @@ function App() {
   }, [forceUpdate, pause, resume]);
 
   const resumeGame = () => {
-    console.log("resume");
     resume();
     tetris.status = "playing";
   };
