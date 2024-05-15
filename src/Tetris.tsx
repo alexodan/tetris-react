@@ -200,11 +200,3 @@ export class Tetris {
     }
   }
 }
-
-// Pieces (movement, rotation, collisions, stop)
-
-// Engine (tick, clear lines, game status)
-
-// User input
-
-// Rendering (React)
