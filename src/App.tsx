@@ -13,6 +13,7 @@ function Score({ score }: { score: number }) {
 
 function App() {
   const [board, setBoard] = useReducer((_: number[][], action: number[][]) => {
+    // why include this hack? Board wasn't re-rendering with useState
     return [...action];
   }, []);
 
