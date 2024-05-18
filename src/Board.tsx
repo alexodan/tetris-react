@@ -12,6 +12,7 @@ export function Board({
   status,
   resumeGame,
 }: PropsWithChildren<BoardProps>) {
+  console.log("re-render Board");
   return (
     <div className={`board ${status}`}>
       {status === "game-over" ? (

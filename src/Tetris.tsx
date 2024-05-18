@@ -1,7 +1,3 @@
-// TODO:
-// colors
-// pause
-
 export type GameStatus = "playing" | "game-over" | "paused";
 
 function getRowsAndCols(size: "S" | "M" | "L") {
@@ -69,14 +65,18 @@ export class Tetris {
     color: string;
   } = { x: 0, y: 0, shape: [], color: "" };
   gameSpeed: number;
+  onChange: (board: number[][]) => void;
 
   constructor({
     size,
     gameSpeed = 500,
+    onChange,
   }: {
     size: "S" | "M" | "L";
     gameSpeed: number;
+    onChange: (board: number[][]) => void;
   }) {
+    this.onChange = onChange;
     [this.ROWS, this.COLS] = size ? getRowsAndCols(size) : [18, 10];
     this.board = new Array(this.ROWS)
       .fill("")
@@ -122,6 +122,8 @@ export class Tetris {
         }
       }
     }
+    this.onChange(this.board);
+    // this.updateBoard() -> this.onChange (updates and notifies)
   }
 
   checkMove({ dx = 0, dy = 0 }: { dx?: number; dy?: number }) {
@@ -198,5 +200,10 @@ export class Tetris {
         this.board.unshift(new Array(this.COLS).fill(0));
       }
     }
+    this.onChange(this.board);
   }
 }
+
+// Tetris class
+
+// useTetris() { }

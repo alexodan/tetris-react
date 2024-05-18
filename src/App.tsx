@@ -1,23 +1,31 @@
 import "./App.css";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { Tetris } from "./Tetris";
 import { useInterval } from "react-timing-hooks";
 import { Board } from "./Board";
 
 export type Piece = "I" | "J" | "L" | "O" | "S" | "T" | "Z";
 
+// Note: im not updating the score yet
 function Score({ score }: { score: number }) {
   return <h2 className="score">Score: {score}</h2>;
 }
 
-const tetris = new Tetris({
-  size: "M",
-  gameSpeed: 600,
-});
-
 function App() {
-  const [, updateState] = useState({});
-  const forceUpdate = useCallback(() => updateState({}), []);
+  const [board, setBoard] = useReducer((_: number[][], action: number[][]) => {
+    return [...action];
+  }, []);
+
+  const [tetris] = useState(
+    () =>
+      new Tetris({
+        size: "M",
+        gameSpeed: 600,
+        // controls: { moveLeftKey, moveRightKey }
+        // context: { domElement: document }
+        onChange: setBoard,
+      })
+  );
 
   const { pause, start, resume } = useInterval(() => {
     if (tetris.status === "game-over") {
@@ -28,13 +36,13 @@ function App() {
       tetris.movePiece({ dy: 1 });
       tetris.renderPiece();
     }
-    forceUpdate();
   }, tetris.gameSpeed);
 
   useEffect(() => {
     start();
   }, [start]);
 
+  // think someone importing the game or smth
   useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       if (e.key === "ArrowLeft") {
@@ -54,13 +62,12 @@ function App() {
       } else if (e.key === "ArrowDown") {
         tetris.movePiece({ dy: 1 });
       }
-      forceUpdate();
     };
     document.addEventListener("keydown", listener);
     return () => {
       document.removeEventListener("keydown", listener);
     };
-  }, [forceUpdate, pause, resume]);
+  }, [pause, resume, tetris]);
 
   const resumeGame = () => {
     resume();
@@ -70,11 +77,7 @@ function App() {
   return (
     <div className="app">
       <Score score={tetris.score} />
-      <Board
-        board={tetris.board}
-        status={tetris.status}
-        resumeGame={resumeGame}
-      />
+      <Board board={board} status={tetris.status} resumeGame={resumeGame} />
     </div>
   );
 }
